@@ -1,0 +1,12 @@
+{
+  "name": "tiendanube-autopago",
+  "version": "1.0.0",
+  "description": "Auto marca órdenes de Tiendanube como pagadas",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
