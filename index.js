@@ -12,24 +12,30 @@ app.post("/webhook", async (req, res) => {
 
     console.log(`Nueva orden recibida: ${orderId}`);
 
-    // Marcar la orden como pagada
+    // Esperar 2 segundos para que la orden se registre bien
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Marcar la orden como pagada via transactions
     const response = await fetch(
-      `https://api.tiendanube.com/v1/${STORE_ID}/orders/${orderId}`,
+      `https://api.tiendanube.com/v1/${STORE_ID}/orders/${orderId}/transactions`,
       {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authentication: `bearer ${ACCESS_TOKEN}`,
           "User-Agent": "AutoPago/1.0",
         },
         body: JSON.stringify({
-          payment_status: "paid",
+          payment_provider_id: "custom",
+          amount: order.total,
+          currency: order.currency,
+          status: "paid",
         }),
       }
     );
 
     const data = await response.json();
-    console.log(`Orden ${orderId} marcada como pagada:`, data.payment_status);
+    console.log(`Orden ${orderId} marcada como pagada:`, JSON.stringify(data));
 
     res.status(200).json({ success: true });
   } catch (error) {
