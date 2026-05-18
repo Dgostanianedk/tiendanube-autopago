@@ -27,9 +27,11 @@ app.post("/webhook", async (req, res) => {
         },
         body: JSON.stringify({
           payment_provider_id: "custom",
+          payment_method: "other",
           amount: order.total,
           currency: order.currency,
           status: "paid",
+          first_event: true,
         }),
       }
     );
@@ -52,3 +54,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
 });
+
